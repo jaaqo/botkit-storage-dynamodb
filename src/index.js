@@ -18,7 +18,11 @@ module.exports = function(config) {
 
     var storage = {};
 
-    ['teams', 'channels', 'users'].forEach(function(type) {
+    var defaultTypes = ['teams', 'channels', 'users'];
+    var extraTypes = config.extraTypes || [];
+    var types = defaultTypes.concat(extraTypes);
+
+    types.forEach(function(type) {
         storage[type] = getStorage(db, config.dynamoTable, type);
     });
 

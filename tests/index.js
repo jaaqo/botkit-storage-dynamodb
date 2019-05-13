@@ -65,6 +65,17 @@ describe('Dynamo', function() {
                 dynamoTable: 'botkit'
             });
         });
+
+        it('should create new storage modules when extraTypes are specified in config', function() {
+            var extraTypes = ['extraType', 'anotherExtraType'];
+            var configWithExtraTypes = Object.assign(config, {
+                extraTypes
+            });
+            var storage = Storage(configWithExtraTypes);
+            var types = Object.keys(storage);
+
+            types.should.containDeep(extraTypes);
+        });
     });
 
     ['teams', 'channels', 'users'].forEach(function(method) {
