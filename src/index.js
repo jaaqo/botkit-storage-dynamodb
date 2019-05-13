@@ -42,37 +42,21 @@ function getStorage(db, table, type) {
 
     return {
         get: function(id, cb) {
-            dynamo.find({hash: type, range: id})
-            .then(function(res) {
-                res = res || {};
-                if (Object.keys(res).length === 0) { // no result found
-                    cb('No result found for ' + id, null);
-                } else { // result found
-                    cb(null, res);
-                }
-            }).catch(function(err) {
-                cb(err, null);
-            });
+            return dynamo.find({hash: type, range: id}, cb);
         },
 
         save: function(data, cb) {
-            dynamo.update({ hash: type, range: data.id }, removeTypeAndID(data))
-            .then(function(res) {
-                res = res || {};
-                cb(null, res);
-            }).catch(function(err) {
-                cb(err, null);
-            });
+            return dynamo.update({ hash: type, range: data.id }, removeTypeAndID(data), cb);
         },
 
         all: function(cb) {
-            dynamo.findAll(type)
-            .then(function(res) {
-                res = res || {};
-                cb(null, res);
-            }).catch(function(err) {
-                cb(err, null);
-            });
+            return dynamo.findAll(type, cb);
+        },
+        find: function(data, cb) {
+            throw new Error('Not implemented yet.');
+        },
+        delete: function(id, cb) {
+            throw new Error('Not implemented yet.');
         }
     };
 }
